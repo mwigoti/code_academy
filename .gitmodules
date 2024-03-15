@@ -1,0 +1,3 @@
+[submodule "Academy"]
+	path = Academy
+	url = git@github.com:mwigoti/code_academy.git
