@@ -61,11 +61,14 @@ def join_class_room(request,subject_id,session_year_id):
 
 
 def student_view_attendance(request):
-    student=Students.objects.get(admin=request.user.id)
-    course=student.course_id
-    subjects=Subjects.objects.filter(course_id=course)
-    return render(request,"student_template/student_view_attendance.html",{"subjects":subjects})
+    try:
 
+        student=Students.objects.get(admin=request.user.id)
+        course=student.course_id
+        subjects=Subjects.objects.filter(course_id=course)
+        return render(request,"student_template/student_view_attendance.html",{"subjects":subjects})
+    except:
+        HttpResponse("Enter dates")
 def student_view_attendance_post(request):
     subject_id=request.POST.get("subject")
     start_date=request.POST.get("start_date")
