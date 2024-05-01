@@ -3,7 +3,7 @@ app==0.0.1
 argcomplete==2.1.1
 asgiref==3.6.0
 asn1crypto==1.5.1
-astroid==2.14.0-dev0 
+astroid==2.13.5
 attrs==22.2.0
 autobahn==23.1.2
 Automat==22.10.0
