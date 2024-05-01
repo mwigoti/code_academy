@@ -21,7 +21,7 @@ constantly==15.1.0
 cryptography==39.0.1
 cx_Freeze==6.14.1
 daphne==4.0.0
-dbus-python==1.3.2
+dbus-python
 dill==0.3.6
 distro==1.8.0
 dj-database-url==1.2.0
@@ -107,6 +107,6 @@ whitenoise==6.3.0
 wsproto==1.2.0
 xdg==5.1.1
 zope.interface==5.5.2
-dbus-1
+
 PyGObject>=3.42.0
 
