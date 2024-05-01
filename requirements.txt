@@ -51,7 +51,7 @@ jmespath==1.0.1
 knox==0.1.14
 lazr.restfulclient==0.14.6
 lazr.uri==1.0.6
-lightdm-gtk-greeter-settings==1.2.3
+
 loguru==0.7.0
 louis==3.29.0
 MarkupSafe==2.1.2
