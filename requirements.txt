@@ -109,4 +109,6 @@ xdg==5.1.1
 zope.interface==5.5.2
 dbus-python>=1.2.16
 PyGObject>=3.42.0
+CMake>=3.17
+
 
