@@ -82,9 +82,9 @@ WSGI_APPLICATION = 'student_management_system.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/2.2/ref/settings/#databases
+DATABASE_URL = os.environ.get('DATABASE_URL')
 
-DATABASES = {'default': dj_database_url.parse("postgres://codecubes_user:yNjJU9PXhkPfwGkAWAYwRmwxcflj6Cea@dpg-coot5oe3e1ms73bfqqog-a.oregon-postgres.render.com/codecubes")}
+DATABASES = {'default': dj_database_url.parse(DATABASE_URL)}
 
 
 
