@@ -86,7 +86,7 @@ pyOpenSSL==23.1.1
 pyoxidizer==0.24.0
 pyparsing==3.0.9
 pytesseract==0.3.10
-python-apt==2.4.1
+
 python-dateutil==2.8.2
 python-engineio==4.3.4
 python-socketio==5.7.2
