@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,13 +21,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'so*rai_2(lk7t(yh%de+_kp_c%*r_b9wkga%gyo5tl9_8_r!xx'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-#HEROKU LIVE PROJECT LINK
-#ALLOWED_HOSTS = ["studentmanagementsystem22.herokuapp.com"]
+
 ALLOWED_HOSTS = ["*"]
 
 MEDIA_URL="/media/"
@@ -84,19 +84,8 @@ WSGI_APPLICATION = 'student_management_system.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        #=====Enable Only Making Project Live on Heroku====
-         'ENGINE': 'django.db.backends.sqlite3',
-         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        #'ENGINE':'django.db.backends.mysql',
-        #'NAME':'code_academy',
-        #'USER':'root',
-        #'PASSWORD':'REAL',
-        #'HOST':'localhost',
-        #'PORT':'3306'
-    }
-}
+DATABASES = {'default': dj_database_url.parse("postgres://codecubes_user:yNjJU9PXhkPfwGkAWAYwRmwxcflj6Cea@dpg-coot5oe3e1ms73bfqqog-a.oregon-postgres.render.com/codecubes")}
+
 
 
 # Password validation
@@ -150,8 +139,6 @@ EMAIL_FILE_PATH=os.path.join(BASE_DIR,"sent_mails")
 # DEFAULT_FROM_EMAIL="Student management System <GMAIl_EMAIL>"
 #
 
-#Enable Only Making Project Live on Heroku
-# STATICFILES_STORAGE='whitenoise.storage.CompressedManifestStaticFilesStorage'
-# import dj_database_url
-# prod_db=dj_database_url.config(conn_max_age=500)
-# DATABASES['default'].update(prod_db)
+
+STATICFILES_STORAGE='whitenoise.storage.CompressedManifestStaticFilesStorage'
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
