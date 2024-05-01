@@ -1,0 +1,5 @@
+# render.yaml
+environment:
+  system_packages:
+    - libdbus-1-dev
+    - libgirepository1.0-dev
