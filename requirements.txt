@@ -107,5 +107,6 @@ whitenoise==6.3.0
 wsproto==1.2.0
 xdg==5.1.1
 zope.interface==5.5.2
-PyGObject 
-dbus-python
+dbus-python>=1.2.16
+PyGObject>=3.42.0
+
