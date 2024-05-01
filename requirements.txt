@@ -47,7 +47,7 @@ incremental==22.10.0
 isort==5.12.0
 Jinja2==3.1.2
 jmespath==1.0.1
-kali-tweaks== 2023.3.2.
+
 knox==0.1.14
 lazr.restfulclient==0.14.6
 lazr.uri==1.0.6
