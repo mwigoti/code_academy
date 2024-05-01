@@ -101,8 +101,7 @@ shortuuid==1.0.11
 simple-websocket==0.6.0
 six==1.16.0
 socketio==0.2.1
-sqlparse
-sympy==1.11.1
+
 tomlkit==0.11.6
 Twisted==22.10.0
 txaio==22.2.1
