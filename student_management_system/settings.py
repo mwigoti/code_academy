@@ -142,3 +142,5 @@ EMAIL_FILE_PATH=os.path.join(BASE_DIR,"sent_mails")
 
 STATICFILES_STORAGE='whitenoise.storage.CompressedManifestStaticFilesStorage'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+CORS_ALLOW_ALL_ORIGINS = True
+STATICFILES_DIRS = [BASE_DIR / "static"]
