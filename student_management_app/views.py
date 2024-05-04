@@ -1,4 +1,7 @@
-
+from django.utils import timezone
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth import get_user_model
+import datetime
 
 from django.contrib import messages
 from django.contrib.auth import  login, logout
@@ -150,6 +153,7 @@ class PasswordResetConfirmView(FormView):
     def get_user(self):
         uidb64 = self.kwargs['uidb64']
         token = self.kwargs['token']
+        expiration_timestamp = self.kwargs['expiration_timestamp']
         UserModel = get_user_model()
         try:
             uid = force_str(urlsafe_base64_decode(uidb64))
@@ -158,7 +162,11 @@ class PasswordResetConfirmView(FormView):
             user = None
 
         if user is not None and default_token_generator.check_token(user, token):
-            return user
+            expiration_date = timezone.make_aware(datetime.fromtimestamp(expiration_timestamp), timezone.get_current_timezone())
+            if expiration_date < timezone.now():
+                user = None
+
+        return user
 
     def form_valid(self, form):
         user = form.save()
