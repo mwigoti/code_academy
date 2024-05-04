@@ -110,9 +110,10 @@ def add_course_save(request):
             return HttpResponseRedirect(reverse("add_course"))
 
 def add_student(request):
+    form=AddStudentForm(request.POST,request.FILES)
     courses=Courses.objects.all()
     session_years=SessionYearModel.object.all()
-    return render(request,"hod_template/add_student_template.html",{"courses":courses,"session_years":session_years})
+    return render(request,"hod_template/add_student_template.html",{"courses":courses,"session_years":session_years, "form":form})
 
 def add_student_save(request):
     if request.method!="POST":
