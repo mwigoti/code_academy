@@ -132,13 +132,16 @@ AUTHENTICATION_BACKENDS=['student_management_app.EmailBackEnd.EmailBackEnd']
 EMAIL_BACKEND="django.core.mail.backends.filebased.EmailBackend"
 EMAIL_FILE_PATH=os.path.join(BASE_DIR,"sent_mails")
 
-EMAIL_HOST="smtp.gmail.com"
-EMAIl_PORT=587
-EMAIL_HOST_USER="kevost83@gmail.com"
-EMAIL_HOST_PASSWORD="@Elder66"
-EMAIL_USE_TLS=True
-DEFAULT_FROM_EMAIL="kevost83@gmail.com"
+import os
 
+# Email Settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'kevost83@gmail.com'
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = 'Student Management System <kevost83@gmail.com>'
 
 STATICFILES_STORAGE='whitenoise.storage.CompressedManifestStaticFilesStorage'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
