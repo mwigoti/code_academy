@@ -7,6 +7,12 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
+from django.contrib.auth.tokens import default_token_generator
+from django.utils import timezone
+from datetime import timedelta
+
 from student_management_app.EmailBackEnd import EmailBackEnd
 
 from student_management_system import settings
@@ -116,7 +122,8 @@ def password_reset_view(request):
             if user:
                 uid = urlsafe_base64_encode(force_bytes(user.pk))
                 token = default_token_generator.make_token(user)
-                reset_link = request.build_absolute_uri(reverse('password_reset_confirm', args=[uid, token]))
+                expiration_date = timezone.now() + timedelta(hours=1)  # Set expiration time to 1 hour
+                reset_link = request.build_absolute_uri(reverse('password_reset_confirm', args=[uid, token, int(expiration_date.timestamp())]))
                 subject = 'Password Reset Request'
                 message = f'Hello {user.username},\n\nClick the following link to reset your password:\n{reset_link}\n\nThis link will expire in 30 minutes.'
                 from_email = settings.DEFAULT_FROM_EMAIL
