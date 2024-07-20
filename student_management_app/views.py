@@ -114,6 +114,10 @@ def showFirebaseJS(request):
 def Testurl(request):
     return HttpResponse("Ok")
 
+
+# Constants
+RESET_TIMEOUT = 3600  # 1 hour in seconds
+
 def password_reset_view(request):
     if request.method == 'POST':
         form = PasswordResetForm(request.POST)
@@ -126,20 +130,17 @@ def password_reset_view(request):
                 user.save()
                 uid = urlsafe_base64_encode(force_bytes(user.pk))
                 token = default_token_generator.make_token(user)
-                expiration_date = timezone.now() + timedelta(hours=1)  # Set expiration time to 1 hour
-                reset_link = request.build_absolute_uri(reverse('password_reset_confirm', args=[uid, token, int(expiration_date.timestamp())]))
+                reset_link = request.build_absolute_uri(reverse('password_reset_confirm', args=[uid, token]))
                 subject = 'Password Reset Request'
-                message = f'Hello {user.username},\n\nClick the following link to reset your password:\n{reset_link}\n\nThis link will expire in 30 minutes.'
+                message = f'Hello {user.username},\n\nClick the following link to reset your password:\n{reset_link}\n\nThis link will expire in 1 hour.'
                 from_email = settings.DEFAULT_FROM_EMAIL
                 recipient_list = [user.email]
                 send_mail(subject, message, from_email, recipient_list)
                 return redirect('password_reset_done')
     else:
         form = PasswordResetForm()
-
+    
     return render(request, 'registration/password_reset_form.html', {'form': form})
-
-
 
 class PasswordResetConfirmView(FormView):
     template_name = 'registration/password_reset_confirm.html'
@@ -160,14 +161,23 @@ class PasswordResetConfirmView(FormView):
             uid = force_str(urlsafe_base64_decode(uidb64))
             user = UserModel.objects.get(pk=uid)
         except (UserModel.DoesNotExist, ValueError, TypeError):
-            user = None
+            return None
 
         if user is not None and default_token_generator.check_token(user, token):
-            # Check if the token is still valid (e.g., not older than 1 hour)
-            if user.password_reset_timestamp and (timezone.now() - user.password_reset_timestamp).total_seconds() <= 3600:
+            if user.password_reset_timestamp and (timezone.now() - user.password_reset_timestamp).total_seconds() <= RESET_TIMEOUT:
                 return user
         return None
 
     def form_valid(self, form):
         user = form.save()
+        user.password_reset_timestamp = None  # Reset the timestamp after successful password change
+        user.save()
         return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.user is None:
+            context['validlink'] = False
+        else:
+            context['validlink'] = True
+        return context
