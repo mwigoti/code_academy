@@ -123,6 +123,8 @@ def password_reset_view(request):
             UserModel = get_user_model()
             user = UserModel.objects.filter(email=email).first()
             if user:
+                user.password_reset_timestamp = timezone.now()
+                user.save()
                 uid = urlsafe_base64_encode(force_bytes(user.pk))
                 token = default_token_generator.make_token(user)
                 expiration_date = timezone.now() + timedelta(hours=1)  # Set expiration time to 1 hour
@@ -139,6 +141,7 @@ def password_reset_view(request):
     return render(request, 'registration/password_reset_form.html', {'form': form})
 
 
+
 class PasswordResetConfirmView(FormView):
     template_name = 'registration/password_reset_confirm.html'
     form_class = SetPasswordForm
@@ -153,22 +156,19 @@ class PasswordResetConfirmView(FormView):
     def get_user(self):
         uidb64 = self.kwargs['uidb64']
         token = self.kwargs['token']
-        expiration_timestamp = self.kwargs['expiration_timestamp']
         UserModel = get_user_model()
         try:
             uid = force_str(urlsafe_base64_decode(uidb64))
             user = UserModel.objects.get(pk=uid)
-        except (UserModel.DoesNotExist, ValueError):
+        except (UserModel.DoesNotExist, ValueError, TypeError):
             user = None
 
         if user is not None and default_token_generator.check_token(user, token):
-            expiration_date = timezone.make_aware(datetime.fromtimestamp(expiration_timestamp), timezone.get_current_timezone())
-            if expiration_date < timezone.now():
-                user = None
-
-        return user
+            # Check if the token is still valid (e.g., not older than 1 hour)
+            if user.password_reset_timestamp and (timezone.now() - user.password_reset_timestamp).total_seconds() <= 3600:
+                return user
+        return None
 
     def form_valid(self, form):
         user = form.save()
         return super().form_valid(form)
-
